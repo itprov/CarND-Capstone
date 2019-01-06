@@ -27,8 +27,9 @@ class PID(object):
             val = self.max
         elif val < self.min:
             val = self.min
-        else:
-            self.int_val = integral
+
+        # Update state
+        self.int_val = integral
         self.last_error = error
 
         return val

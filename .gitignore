@@ -3,6 +3,6 @@
 build
 devel
 log
-traffic_light_bag_file*
+*.bag
 
 profile.tmp
