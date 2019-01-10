@@ -94,7 +94,7 @@ class WaypointUpdater(object):
 
         return lane
 
-    def decelerate_waypoints(self, closest_idx):
+    def decelerate_waypoints(self, waypoints, closest_idx):
         decel_wp = []
         for i, wp in enumerate(waypoints):
             p = Waypoint()
