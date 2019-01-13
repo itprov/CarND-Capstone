@@ -37,6 +37,7 @@ class WaypointUpdater(object):
 
         # TODO: Add a subscriber for /obstacle_waypoint below
 
+        # Publish final waypoints
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
         # TODO: Add other member variables you need below
@@ -47,7 +48,6 @@ class WaypointUpdater(object):
         self.stop_line_wp_idx = -1
 
         self.loop()
-        #rospy.spin()
 
     def loop(self):
         rate = rospy.Rate(50)
@@ -81,7 +81,6 @@ class WaypointUpdater(object):
 
     def generate_lane(self):
         lane = Lane()
-        lane.header = self.base_waypoints.header
 
         closest_idx = self.get_closest_waypoint_idx()
         farthest_idx = closest_idx + LOOKAHEAD_WPS
@@ -126,7 +125,7 @@ class WaypointUpdater(object):
         self.stop_line_wp_idx = msg.data
 
     def obstacle_cb(self, msg):
-        # TODO: Callback for /obstacle_waypoint message. We will implement it later
+        # Not implemented
         pass
 
     def get_waypoint_velocity(self, waypoint):
@@ -137,10 +136,11 @@ class WaypointUpdater(object):
 
     def distance(self, waypoints, wp1, wp2):
         dist = 0
-        dl = lambda a, b: math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2  + (a.z-b.z)**2)
-        for i in range(wp1, wp2+1):
-            dist += dl(waypoints[wp1].pose.pose.position, waypoints[i].pose.pose.position)
-            wp1 = i
+        if wp2 < LOOKAHEAD_WPS:
+            dl = lambda a, b: math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2  + (a.z-b.z)**2)
+            for i in range(wp1, wp2+1):
+                dist += dl(waypoints[wp1].pose.pose.position, waypoints[i].pose.pose.position)
+                wp1 = i
         return dist
 
 

@@ -30,7 +30,8 @@ class Controller(object):
 
         # Max braking torque to be applied while decelerating
         vehicle_mass_with_fuel = vehicle_mass + fuel_capacity * GAS_DENSITY
-        self.brake_limit = vehicle_mass_with_fuel * decel_limit * wheel_radius
+        self.brake_torque = vehicle_mass_with_fuel * wheel_radius
+        self.decel_limit = decel_limit
 
         self.last_time = rospy.get_time()
 
@@ -54,14 +55,15 @@ class Controller(object):
         # Get throttle value from PID Controller
         throttle = self.throttle_controller.step(vel_error, sample_time)
 
-        if throttle > 0:
+        if vel_error < 0.:
+            # Decelerate if current vel > target vel
+            throttle = 0.0
+            decel = max(vel_error, self.decel_limit)
+            brake = abs(decel) * self.brake_torque
+        else:
             # Throttle to accelerate should be between 0.0 and 1.0.
             throttle = min(1.0, throttle)
             brake = 0.0
-        else:
-            # Apply full brake to decelerate
-            throttle = 0.0
-            brake = self.brake_limit
 
         # Get steering value from Yaw Controller
         steer = self.yaw_controller.get_steering(linear_vel, angular_vel,
