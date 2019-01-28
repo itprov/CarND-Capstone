@@ -14,6 +14,7 @@ and
 
 `rosbag play -l ../data/traffic_light_training.bag`
 `rosrun image_view image_saver image:=/image_raw`
+
 5. Select training images - roughly equal number of red, yellow, green, and unknown/no light scenarios, and label them using a labeling tool. We used [labelImg](https://github.com/tzutalin/labelImg).
 6. Follow the instructions [here](https://github.com/AlexeyAB/darknet#how-to-train-tiny-yolo-to-detect-your-custom-objects) to start training a classifier for traffic light detection.
 7. Stop training when the average loss (error) is less than 0.5.
