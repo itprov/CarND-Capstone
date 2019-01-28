@@ -13,6 +13,7 @@ We used the following approach for Traffic Light Detection:
 and
 
 `rosbag play -l ../data/traffic_light_training.bag`
+
 `rosrun image_view image_saver image:=/image_raw`
 
 5. Select training images - roughly equal number of red, yellow, green, and unknown/no light scenarios, and label them using a labeling tool. We used [labelImg](https://github.com/tzutalin/labelImg).
