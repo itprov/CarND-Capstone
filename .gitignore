@@ -1,5 +1,6 @@
 *.py[cod]
 
+.cmd
 build
 devel
 log
