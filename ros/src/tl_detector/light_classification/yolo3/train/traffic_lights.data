@@ -1,5 +1,0 @@
-classes = 3
-train = data/traffic_lights_train.txt
-valid = data/traffic_lights_test.txt
-names = data/traffic_lights_obj.names
-backup = backup

@@ -4,7 +4,7 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 We used the following approach for Traffic Light Detection:
 1. Download and install [Darknet](https://pjreddie.com/darknet/yolo/).
-2. Download pre-trained YOLOv3 tiny model [weights](https://pjreddie.com/media/files/yolov3-tiny.weights) and [config](https://github.com/pjreddie/darknet/blob/master/cfg/yolov3-tiny.cfg).
+2. Download pre-trained YOLOv2 tiny model [weights](https://pjreddie.com/media/files/yolov2-tiny.weights) and [config](https://github.com/pjreddie/darknet/blob/master/cfg/yolov2-tiny.cfg).
 3. YOLO detects 80 classes by default. Follow instructions [here](https://github.com/AlexeyAB/darknet#how-to-train-to-detect-your-custom-objects) to edit config file, create classes file (traffic_lights-obj.names), metadata file (traffic_lights.data) to adapt them to our need of detecting 3 classes (red, yello, green lights).
 4. Collect training image data from simulator and actual test track by installing and using ROS package `image_view`, e.g.:
 
@@ -19,8 +19,7 @@ and
 5. Select training images - roughly equal number of red, yellow, green, and unknown/no light scenarios, and label them using a labeling tool. We used [labelImg](https://github.com/tzutalin/labelImg).
 6. Follow the instructions [here](https://github.com/AlexeyAB/darknet#how-to-train-tiny-yolo-to-detect-your-custom-objects) to start training a classifier for traffic light detection.
 7. Stop training when the average loss (error) is less than 0.5.
-8. Convert the resulting YOLO v3 weights to Keras H5 format using a YOLO v3 Keras conversion and implementation tool, e.g. [keras-yolo3](https://github.com/qqwweee/keras-yolo3).
-9. Update tl_classifier.py to use the weights along with the keras-yolo3 API to predict traffic lights and their states.
+8. Update tl_classifier.py to use the weights along with OpenCV API to predict traffic lights with states.
 
 ## Installation
 

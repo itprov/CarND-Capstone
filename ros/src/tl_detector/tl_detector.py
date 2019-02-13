@@ -36,7 +36,6 @@ class TLDetector(object):
         rely on the position of the light and the camera image to predict it.
         '''
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
-        sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
@@ -44,13 +43,19 @@ class TLDetector(object):
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
-        self.light_classifier = TLClassifier()
+        simulator_mode = not self.config['is_site']
+        self.light_classifier = TLClassifier(simulator_mode)
         self.listener = tf.TransformListener()
 
         self.state = TrafficLight.UNKNOWN
         self.last_state = TrafficLight.UNKNOWN
         self.last_wp = -1
         self.state_count = 0
+
+        image_topic = '/image_raw'
+        if simulator_mode:
+            image_topic = '/image_color'
+        sub6 = rospy.Subscriber(image_topic, Image, self.image_cb)
 
         rospy.spin()
 
@@ -140,7 +145,6 @@ class TLDetector(object):
         """
         closest_light = None
         line_wp_idx = None
-
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
         if (self.pose):
@@ -162,7 +166,7 @@ class TLDetector(object):
 
         if closest_light:
             state = self.get_light_state(closest_light)
-            #rospy.loginfo("Predicted state = %d, labeled state = %d", state, closest_light.state)
+            rospy.loginfo("Predicted state = %d, labeled state = %d", state, closest_light.state)
             return line_wp_idx, state
 
         return -1, TrafficLight.UNKNOWN
