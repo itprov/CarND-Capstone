@@ -1,6 +1,5 @@
 from __future__ import division
 
-import rospy
 import cv2
 import numpy as np
 from styx_msgs.msg import TrafficLight
@@ -14,8 +13,8 @@ class TLClassifier(object):
         self.scale = 1/255
         self.num_classes = 3 # Classes: RED = 0, YELLOW = 1, GREEN = 2
 
-        model_config = '/capstone/ros/src/tl_detector/light_classification/traffic_lights-yolov2-tiny.cfg'
-        model_weights = '/capstone/ros/src/tl_detector/light_classification/traffic_lights_model-{}.weights'
+        model_config = 'light_classification/traffic_lights-yolov2-tiny.cfg'
+        model_weights = 'light_classification/traffic_lights_model-{}.weights'
         if simulator_mode:
             model_weights = model_weights.format('simulator')
         else:

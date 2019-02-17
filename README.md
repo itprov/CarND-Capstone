@@ -4,9 +4,11 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 We used the following approach for Traffic Light Detection:
 1. Download and install [Darknet](https://pjreddie.com/darknet/yolo/).
-2. Download pre-trained YOLOv2 tiny model [weights](https://pjreddie.com/media/files/yolov2-tiny.weights) and [config](https://github.com/pjreddie/darknet/blob/master/cfg/yolov2-tiny.cfg).
-3. YOLO detects 80 classes by default. Follow instructions [here](https://github.com/AlexeyAB/darknet#how-to-train-to-detect-your-custom-objects) to edit config file, create classes file (traffic_lights-obj.names), metadata file (traffic_lights.data) to adapt them to our need of detecting 3 classes (red, yello, green lights).
-4. Collect training image data from simulator and actual test track by installing and using ROS package `image_view`, e.g.:
+2. Download pre-trained YOLOv2 tiny model [weights](https://pjreddie.com/media/files/yolov2-tiny.weights) and [config](https://github.com/pjreddie/darknet/blob/master/cfg/yolov2-tiny.cfg). (Since YOLOv3 is not compatible with OpenCV 3.3.1 used in ROS Kinetic, we chose to use YOLOv2.)
+3. YOLO detects 80 classes by default. Follow instructions [here](https://github.com/AlexeyAB/darknet/tree/47c7af1cea5bbdedf1184963355e6418cb8b1b4f#how-to-train-tiny-yolo-to-detect-your-custom-objects) to edit config file, create classes file (traffic_lights-obj.names), metadata file (traffic_lights.data) to adapt them to our need of detecting 3 classes (red, yello, green lights).
+4. Collect training image data from simulator and actual test track by installing and using ROS package `image_view`, as follows:
+
+`apt-get install -y ros-kinetic-image-view`
 
 `rosrun image_view image_saver image:=/image_color`
 
@@ -14,12 +16,12 @@ and
 
 `rosbag play -l ../data/traffic_light_training.bag`
 
-`rosrun image_view image_saver image:=/image_raw`
+`rosrun image_view image_saver image:=/image_raw _filename_format:="tlt%04i.%s" _sec_per_frame:=0.2`
 
 5. Select training images - roughly equal number of red, yellow, green, and unknown/no light scenarios, and label them using a labeling tool. We used [labelImg](https://github.com/tzutalin/labelImg).
-6. Follow the instructions [here](https://github.com/AlexeyAB/darknet#how-to-train-tiny-yolo-to-detect-your-custom-objects) to start training a classifier for traffic light detection.
+6. Follow the instructions [here](https://github.com/AlexeyAB/darknet/tree/47c7af1cea5bbdedf1184963355e6418cb8b1b4f#how-to-train-to-detect-your-custom-objects) to start training a classifier for traffic light detection.
 7. Stop training when the average loss (error) is less than 0.5.
-8. Update tl_classifier.py to use the weights along with OpenCV API to predict traffic lights with states.
+8. Update tl_classifier.py to use the weights along with OpenCV API to predict traffic lights with states.. Ensure appropriate weights file is used for simulator vs. site case.
 
 ## Installation
 
