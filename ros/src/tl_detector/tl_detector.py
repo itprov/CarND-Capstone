@@ -88,7 +88,7 @@ class TLDetector(object):
         self.has_image = True
         self.camera_image = msg
         self.image_sample_count += 1
-        if TEST_MODE or self.image_sample_count % 8 == 0:
+        if TEST_MODE or self.image_sample_count % 4 == 0:
             light_wp, state = self.process_traffic_lights()
             '''
             Publish upcoming red lights at camera frequency.
